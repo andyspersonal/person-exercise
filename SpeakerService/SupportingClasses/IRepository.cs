@@ -2,7 +2,6 @@
 {
    public interface IRepository
    {
-
-      public int? SaveSpeaker(Speaker speaker);
+      public int SaveSpeaker(Speaker speaker);
    }
 }

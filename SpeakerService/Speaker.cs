@@ -46,12 +46,13 @@ namespace GK.Talks
 
          var approvedEmployers = new List<string>() { "Pluralsight", "Microsoft", "Google" };
 
-         var hasMetStandards = ExperienceLevel > 10 || HasBlog || Certifications.Count() > 3 || approvedEmployers.Contains(Employer);
+         // possible case issue here.
+         var hasMetStandards = ExperienceLevel > 10 || HasBlog || Certifications.Count > 3 || approvedEmployers.Contains(Employer);
 
          if (!hasMetStandards)
          {
             // need to get just the domain from the email
-            // Possible null exception is there is no @ in the email address.  EMail address should be better validated
+            // Possible issue if there is no @ in the email address.  Email address should be better validated
             string emailDomain = Email.Split('@').Last();  
             // DEFECT #5274 CL 12/10/2010
             // We weren't filtering out the prodigy domain so I added it.
@@ -80,7 +81,7 @@ namespace GK.Talks
          {
             if (!session.IsApproved())
             {
-               return RegisterError.NoSessionsApproved;
+               return RegisterError.NoSessionsApproved;  //really this is any session is not approved.  Either chaneg the name of error or change the business logic.
             }
          }
          return RegisterError.None;
@@ -92,25 +93,25 @@ namespace GK.Talks
       /// </summary>
       public void CalculateRegistrationFee()
       {
-         if (ExperienceLevel == null || ExperienceLevel <= 1)
+         switch (ExperienceLevel.GetValueOrDefault())
          {
-            RegistrationFee = 500;
-         }
-         else if (ExperienceLevel >= 2 && ExperienceLevel <= 3)
-         {
-            RegistrationFee = 250;
-         }
-         else if (ExperienceLevel >= 4 && ExperienceLevel <= 5)
-         {
-            RegistrationFee = 100;
-         }
-         else if (ExperienceLevel >= 6 && ExperienceLevel <= 9)
-         {
-            RegistrationFee = 50;
-         }
-         else
-         {
-            RegistrationFee = 0;
+            case <= 1:
+               RegistrationFee = 500;
+               break;
+            case 2:
+            case 3:
+               RegistrationFee = 250;
+               break;
+            case 4:
+            case 5:
+               RegistrationFee = 100;
+               break;
+            case >= 6 and <= 9:
+               RegistrationFee = 50;
+               break;
+            default:
+               RegistrationFee = 0;
+               break;
          }
       }
    }

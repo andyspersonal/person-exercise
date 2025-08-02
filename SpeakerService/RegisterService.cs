@@ -31,7 +31,7 @@ namespace GK.Talks
 
          // save to teh database.
          var speakerId = _repository.SaveSpeaker(speaker);
-         return new RegisterResponse((int)speakerId); 
+         return new RegisterResponse(speakerId); 
       }
    }
 }
