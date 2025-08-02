@@ -12,6 +12,17 @@
 ## Seperate out Service and entity into their own classes
 Make a register service that takes the speaker as a parameter and has any services injected into it. This reduces the number of responsibilities of the person class and makes it more of an Entity class rather than a mix of a service and an Entity.
 
+## reduce complexity if the register service
+The level of nesting in the register function is due to validation of the speaker.  This can be simplfied by doing all the validation first in the function and returning early.  Further more all the validation can be put into the Speaker class, associating the domain logic with the class (DDD).  The checks for null or zero length will also be change to use the NullOrEmpty string extension.  Might be even better to use NullorWhiteSpace, but this does chnage the functionality.
+
+When doping this I noticed that the list of domains and employees are hard coded.  Typically this would be provided dynamically, say from a database.  It is worth noting that if this were the case then this part of the validation would have to be moved out of the Person class as the validation would require a database call.  The validation could also provide a list of validation issues, which would be more usefull to the consumer.
+
+During this process I have renamed some variables to make them easier to read.  Using full names rather than abbreviations makes the code easier to read.
+
+The validation around experince, certification, employers emails address and web browser seems odd.  I have left it functioning the same, but I think this logic would warrant questioning.
+
+
+
 
 
 
