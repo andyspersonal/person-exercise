@@ -9,5 +9,10 @@
 - The naming convention for variables is inconsistant, for readability these should be consistant.  Some variable do not seem to be well named.
 
 
+## Seperate out Service and entity into their own classes
+Make a register service that takes the speaker as a parameter and has any services injected into it. This reduces the number of responsibilities of the person class and makes it more of an Entity class rather than a mix of a service and an Entity.
+
+
+
 
 
