@@ -16,14 +16,10 @@ namespace GK.Talks
 
 
       /// <summary>
-		/// Register a speaker
-		/// Prams	
-		/// strFirstName speakers first name
-		///	strLastName ^^^ last name
-		/// Email the email
-		/// blogs etc.....
-		/// </summary>
-		/// <returns>speakerID</returns>	
+      /// Registers a speaker for the conference.
+      /// </summary>
+      /// <param name="speaker">The speaker to register</param>
+      /// <returns>A response object that indicates success or failure and the generated speaker id if sucessfull.</returns>
       public RegisterResponse Register(Speaker speaker)
       {
          
@@ -36,31 +32,12 @@ namespace GK.Talks
          {
             return new RegisterResponse(speakerRegistorError);
          }
-       
+
          //if we got this far, the speaker is approved
          //let's go ahead and register him/her now.
          //First, let's calculate the registration fee. 
          //More experienced speakers pay a lower fee.
-         if (speaker.Exp <= 1)
-         {
-            speaker.RegistrationFee = 500;
-         }
-         else if (speaker.Exp >= 2 && speaker.Exp <= 3)
-         {
-            speaker.RegistrationFee = 250;
-         }
-         else if (speaker.Exp >= 4 && speaker.Exp <= 5)
-         {
-            speaker.RegistrationFee = 100;
-         }
-         else if (speaker.Exp >= 6 && speaker.Exp <= 9)
-         {
-            speaker.RegistrationFee = 50;
-         }
-         else
-         {
-            speaker.RegistrationFee = 0;
-         }
+         speaker.CalculateRegistrationFee();
 
 
          //Now, save the speaker and sessions to the db.

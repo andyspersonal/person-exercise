@@ -14,13 +14,13 @@ namespace GK.Talks
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
 		public string Email { get; set; }
-		public int? Exp { get; set; }
+		public int? ExperienceLevel { get; set; }
 		public bool HasBlog { get; set; }
 		public string BlogURL { get; set; }
 		public WebBrowser Browser { get; set; }
 		public List<string> Certifications { get; set; }
 		public string Employer { get; set; }
-		public int RegistrationFee { get; set; }
+		public decimal RegistrationFee { get; private set; }
 		public List<Session> Sessions { get; set; }
 
       /// <summary>
@@ -46,7 +46,7 @@ namespace GK.Talks
 
          var approvedEmployers = new List<string>() { "Pluralsight", "Microsoft", "Google" };
 
-         var hasMetStandards = Exp > 10 || HasBlog || Certifications.Count() > 3 || approvedEmployers.Contains(Employer);
+         var hasMetStandards = ExperienceLevel > 10 || HasBlog || Certifications.Count() > 3 || approvedEmployers.Contains(Employer);
 
          if (!hasMetStandards)
          {
@@ -84,6 +84,34 @@ namespace GK.Talks
             }
          }
          return RegisterError.None;
+      }
+
+
+      /// <summary>
+      /// Calculates and sets the registration fee based on the speaker's experience.
+      /// </summary>
+      public void CalculateRegistrationFee()
+      {
+         if (ExperienceLevel == null || ExperienceLevel <= 1)
+         {
+            RegistrationFee = 500;
+         }
+         else if (ExperienceLevel >= 2 && ExperienceLevel <= 3)
+         {
+            RegistrationFee = 250;
+         }
+         else if (ExperienceLevel >= 4 && ExperienceLevel <= 5)
+         {
+            RegistrationFee = 100;
+         }
+         else if (ExperienceLevel >= 6 && ExperienceLevel <= 9)
+         {
+            RegistrationFee = 50;
+         }
+         else
+         {
+            RegistrationFee = 0;
+         }
       }
    }
 }
