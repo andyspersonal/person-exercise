@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GK.Talks.SupportingClasses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -24,7 +25,7 @@ namespace GK.Talks
 
 		/// <summary>
 		/// Register a speaker
-		/// Prams 
+		/// Prams	
 		/// strFirstName speakers first name
 		///	strLastName ^^^ last name
 		/// Email the email
@@ -60,7 +61,7 @@ namespace GK.Talks
 							//need to get just the domain from the email
 							string emailDomain = Email.Split('@').Last();
 
-							if (!domains.Contains(emailDomain) && (!(Browser.Name == WebBrowser.BrowserName.InternetExplorer && Browser.MajorVersion < 9)))
+							if (!domains.Contains(emailDomain) && (!(Browser.Name == WebBrowser.BrowserName.InternetExplorer.ToString() && Browser.MajorVersion < 9)))
 							{
 								good = true;
 							}
