@@ -9,16 +9,18 @@
 - The naming convention for variables is inconsistent, for readability these should be consistant.  Some variables do not seem to be clearly named.
 
 ## Separate out Service and Entity into their own classes
-Make a register service that takes the speaker as a parameter and has any services injected into it. This reduces the number of responsibilaities of the person class and makes it more of an Entity class rather than a mix of a service and an Entity.
+Make a register service that takes the speaker as a parameter and has any services injected into it. This reduces the number of responsibilaities of the person class and makes it more of an Entity class rather than a mix of a service and an Entity.  The new service will have an interface so that it can be injected into any consumer.
 
 ## Reduce complexity in the register service
-The level of nesting in the register function is due to validation of the speaker.  This can be simplified by doing all the validation first in the function and returning early.  Furthermore all the validation can be put into the Speaker class, associating the domain logic with the class (DDD).  The checks for null or zero length will also be changed to use the NullOrEmpty string extension.  Might be even better to use NullorWhiteSpace.
+The level of nesting in the register function is due to validation of the speaker.  This can be simplified by doing all the validation first in the function and returning early.  Putting it in to its won function allows it to be called independently and makes testing easier.  The checks for null or zero length will also be changed to use the NullOrEmpty.  Might be even better to use NullorWhiteSpace.
 
-When doing this I noticed that the list of domains and employees are hard coded and it can be seen from the comments that this has had to be changed in the past.  Typically this would be provided dynamically, say from a database.  It is worth noting that if this were the case then this part of the validation would have to be moved out of the Person class as the validation would require a database call (Infrastructure dependency). The validation could also provide a list of validation issues, which would be more usefull to the consumer.
+When doing this I noticed that the list of domains and employees are hard coded and it can be seen from the comments that this has had to be changed in the past.  Typically this would be provided dynamically, say from a database, which could easily be achived by adding a new repository method.  The validation result could also provide a list of validation issues, which would be more usefull to the consumer.
 
 During this process I have renamed some variables to make them easier to read.  Using full names rather than abbreviations makes the code easier to read.
 
-The validation around experience, certification, employers, emails address and web browser seems odd.  I have left it functioning the same, but I think this logic would warrant questioning.
+The validation around experience, certification, employers, emails address and web browser seems odd.  I have left it functioning the same (but made it easier to read).
+
+Validation could be moved to its own service and injected into the register service, it could make testing a little more focused.  But that feels a little excesive for the size of project currently.
 
 ## Move calculation of the registration fee to the speaker class
 This puts the domain logic in the entity class rather than the register function (DDD).  It helps to simplify the register function and keep it to a single responsibility.  I have set the registration fee to be a decimal as this likely represents a monetary value.  Handled possible null value for Experience.  Also improved the comments for the public functions.
@@ -28,20 +30,10 @@ Currently the exception when saving to the database is ignored.  The only way th
 
 
 
-## Still to look at
-
-Handling browsers
-
-Seprate request object as browser should not be in the speaker class.  In turn some of the validation can be moved.
-
-Add unit tests
-
-
-
-
-
-
-
-
-
-
+## Possible further enhancments
+ - Seprate request object as browser probably should not be in the speaker class. 
+- BrowserName to be addressed, proibably it own enum not in the WebBroowser class, or may be have a is modern browser function.
+ - Could change HasBlog to be calculated from BlogUrl is null
+ - get list of domains and employers from a repository
+ - consider turning on nullable to protect from null exceptions
+ - When doing string comparisons, consdier ignoring white space and capitalization (Extension method)
